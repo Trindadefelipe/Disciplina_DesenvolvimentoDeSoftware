@@ -1,4 +1,13 @@
-//Problema identifcado: Variavel 'nome' não está sendo utilizada, preço do produto nao esta impedindo valores negativos e codigo criado fora da classe main.
+/*
+* class Produto {
+* public String nome;
+* public double preco;
+* }
+* Produto p = new Produto();
+* p.preco = -100;
+
+Problema identifcado: Variavel 'nome' não está sendo utilizada, preço do produto nao esta impedindo valores negativos e codigo criado fora da classe main.
+*/
 
 package ListaRevisão;
 
