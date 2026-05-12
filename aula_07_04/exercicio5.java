@@ -7,6 +7,7 @@ class Livro {
         this.titulo = titulo;
         this.autor = autor;
         this.paginas = paginas;
+
     }
 
     public String getTitulo() {
@@ -19,14 +20,15 @@ class Livro {
 
     public int getPaginas() {
         return paginas;
-    }
-}
 
-public class exercicio4 {
+    }
+   
+}
+public class exercicio5{
     public static void main(String[] args) {
-        Livro livro1 = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 256);
-        System.out.println("Título: " + livro1.getTitulo());
-        System.out.println("Autor: " + livro1.getAutor());
-        System.out.println("Páginas: " + livro1.getPaginas());
+        Livro livro1 = new Livro("Dom Quixote ", "Miguel de Cervantes", 1328);
+        System.out.println(livro1.getTitulo());
+        System.out.println(livro1.getAutor());
+        System.out.println(livro1.getPaginas());
     }
 }

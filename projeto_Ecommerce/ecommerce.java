@@ -146,7 +146,6 @@ class Carrinho {
                 }
             }
         }
-
     }
 
     // Método calcular total de produto do carrinho

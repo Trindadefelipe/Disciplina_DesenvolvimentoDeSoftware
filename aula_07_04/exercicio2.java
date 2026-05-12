@@ -20,7 +20,6 @@ class Aluno {
         } else {
             System.out.println("Idade inválida!");
         }
-        ;
     }
 }
 

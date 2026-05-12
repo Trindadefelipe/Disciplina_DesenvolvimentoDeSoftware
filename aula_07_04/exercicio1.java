@@ -17,7 +17,7 @@ class Pessoa{
             this.idade = idade;
         } else {
             System.out.println("Idade inválida!");
-        };
+        }
     }
 }
 class exercicio1{
