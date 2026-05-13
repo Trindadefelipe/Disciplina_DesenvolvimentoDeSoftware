@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Produto {
-    private String nomeProduto; // Encapsulando, necessitando utilizar get e set
-    private double valorProduto;
+abstract class Produto {
+    protected String nomeProduto; // Encapsulando, necessitando utilizar get e set
+    protected double valorProduto;
+    protected double valorLiquido = 0.0;
     double percentual = 0.10;
-    private double valorLiquido = 0.0;
 
     public Produto(String nomeProduto, double valorProduto) {
         this.nomeProduto = nomeProduto;
@@ -36,10 +36,13 @@ class Produto {
         valorLiquido = valorProduto - (valorProduto * percentual / 100);
         this.valorProduto = valorLiquido;
     }
+
+    abstract public double calcularPrecoFinal();
 }
 
 class ProdutoFisico extends Produto {
     private double peso;
+    private double frete;
 
     public ProdutoFisico(String nomeProduto, double valorProduto, double peso) {
         super(nomeProduto, valorProduto);
@@ -57,6 +60,20 @@ class ProdutoFisico extends Produto {
             System.out.println("Peso de produto inválido!");
         }
     }
+
+    public double getFrete() {
+        return frete;
+    }
+
+    public void setFrete(double frete) {
+        this.frete = 50;
+    }
+
+    @Override
+    public double calcularPrecoFinal() {
+        return valorProduto + frete;
+    }
+
 }
 
 class ProdutoDigital extends Produto {
@@ -77,6 +94,11 @@ class ProdutoDigital extends Produto {
         } else {
             System.out.println("Tamanho do arquivo inválido!");
         }
+    }
+
+    @Override
+    public double calcularPrecoFinal() {
+        return valorProduto;
     }
 }
 
@@ -134,7 +156,7 @@ class Carrinho {
             for (Produto p : produtos) {
                 System.out.println("-------------------------");
                 System.out.println("Produto: " + p.getNomeProduto());
-                System.out.println("Valor: R$" + p.getValorProduto());
+                System.out.println("Valor: R$" + p.calcularPrecoFinal());
 
                 // utilização de instanceof para confirmar o tipo do objeto
                 if (p instanceof ProdutoDigital pd) {
@@ -152,7 +174,7 @@ class Carrinho {
     double calcularTotal() {
         double valorTotal = 0.0;
         for (Produto p : produtos) {
-            valorTotal += p.getValorProduto();
+            valorTotal += p.calcularPrecoFinal();
         }
         System.out.println("===Total do Carrinho===");
         System.out.println("Valor total do carrinho: R$" + valorTotal);
@@ -195,21 +217,17 @@ public class ecommerce {
 
         Scanner entrada = new Scanner(System.in);
 
-        // Criação de produtos
-        Produto produto1 = new Produto("Camisa Linho", 129.99);
-        Produto produto2 = new Produto("Calça Alfaiataria", 154.50);
-
-        // Criação de produtos Físicos
-        ProdutoFisico produtofisico1 = new ProdutoFisico("Televisão 50 polegadas", 1500, 12);
-        ProdutoFisico produtofisico2 = new ProdutoFisico("Monitor 24 polegadas 144hz Gamer", 630.99, 4);
+        // Criação de produtos físicos
+        Produto produtoFisico1 = new ProdutoFisico("Televisão 50 polegadas", 1599.99, 12);
+        Produto produtoFisico2 = new ProdutoFisico("Monitor 24 polegadas 144hz Gamer", 630.99, 4);
 
         // Criação de produtos Digitais
-        ProdutoDigital produtodigital1 = new ProdutoDigital("GTA 6", 899.99, 1000000);
-        ProdutoDigital produtodigital2 = new ProdutoDigital("Call Of Dutty Warzone", 150.50, 100);
+        Produto produtoDigital1 = new ProdutoDigital("GTA 6", 899.99, 1000000);
+        Produto produtoDigital2 = new ProdutoDigital("Call Of Dutty Warzone", 150.50, 100);
 
         // Aplicando desconto em um produto
-        produtodigital2.aplicarDesconto(100);
-        produto2.aplicarDesconto(10);
+        produtoDigital2.aplicarDesconto(100);
+        produtoFisico2.aplicarDesconto(10);
 
         System.out.print("Digite seu nome: ");
         String nomeDigitado = entrada.nextLine();
@@ -218,36 +236,33 @@ public class ecommerce {
         Carrinho carrinho1 = new Carrinho();
 
         // Menu de exibição
+        System.out.println("Bem vindo, " + cliente1.getNomeCliente() + "!");
+        System.out.println("==== Ecommerce - Felipe Trindade ====");
         int opcao;
         do {
-            System.out.println("Bem vindo, " + cliente1.getNomeCliente() + "!");
-            System.out.println("==== Ecommerce - Felipe Trindade ====");
             System.out.println(
-                    "Escolha o produtos desejado:\n1 - Camisa Linho - R$129,90 \n2 - Calça Alfaiataria - R$154,50 \n3 - Televisão 50' - R$1.500,00 \n4 - Monitor 24' 144hz Gamer - R$630,99 \n5 - GTA 6 - R$899,99 \n6 - Call Of Dutty Warzone - R$150,50 \n7 - Finalizar compra \n0 - Sair");
+                    "Escolha o produtos desejado:\n1 - Televisão 50' - R$1.500,00 \n2 - Monitor 24' 144hz Gamer - R$630,99 \n3 - GTA 6 - R$899,99 \n4 - Call Of Dutty Warzone - R$150,50 \n9 - Finalizar compra \n0 - Sair");
             opcao = entrada.nextInt();
 
             switch (opcao) {
                 case 1:
-                    carrinho1.adicionarProduto(produto1);
+                    carrinho1.adicionarProduto(produtoFisico1);
                     break;
                 case 2:
-                    carrinho1.adicionarProduto(produto2);
+                    carrinho1.adicionarProduto(produtoFisico2);
                     break;
                 case 3:
-                    carrinho1.adicionarProduto(produtofisico1);
+                    carrinho1.adicionarProduto(produtoDigital1);
                     break;
                 case 4:
-                    carrinho1.adicionarProduto(produtofisico2);
+                    carrinho1.adicionarProduto(produtoDigital2);
                     break;
-                case 5:
-                    carrinho1.adicionarProduto(produtodigital1);
-                    break;
-                case 6:
-                    carrinho1.adicionarProduto(produtodigital2);
-                    break;
-                case 7:
+                case 8:
                     Pedido pedido1 = new Pedido(cliente1, carrinho1);
                     pedido1.mostrarResumo();
+                    break;
+                case 9:
+                    pedido1.calcularTotal();
                     break;
                 case 0:
                     System.out.println("Saindo...");
